@@ -72,13 +72,13 @@ export default function PelangganManager() {
             onChange={handleChange}
             placeholder="Nama Pelanggan"
             required
-            className="p-2 border border-gray-300 rounded placeholder:text-gray-500 md:col-span-2"
+            className="p-2 border border-gray-500 rounded placeholder:text-gray-500 md:col-span-2"
           />
           <select
             name="tipe_pelanggan"
             value={newPelanggan.tipe_pelanggan}
             onChange={handleChange}
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border text-gray-500 border-gray-500 rounded"
           >
             <option value="Toko Pasar">Toko Pasar</option>
             <option value="Agen">Agen</option>

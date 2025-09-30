@@ -143,11 +143,11 @@ return (
     <div className="mb-8 p-4 border border-gray-400 rounded-lg shadow-sm bg-white">
       <h2 className="text-xl font-bold mb-4 text-gray-800">Tambah Barang Baru</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" value={newBarang.nama_barang} onChange={handleChange} placeholder="Nama Barang" required className="p-2 border border-gray-500 rounded placeholder:text-gray-500" />
-        <input type="number" name="harga_beli" value={newBarang.harga_beli} onChange={handleChange} placeholder="Harga Beli" required className="p-2 border border-gray-500 rounded placeholder:text-gray-500" />
-        <input type="number" name="harga_jual" value={newBarang.harga_jual} onChange={handleChange} placeholder="Harga Jual" required className="p-2 border border-gray-500 rounded placeholder:text-gray-500" />
-        <input type="number" name="stok" value={newBarang.stok} onChange={handleChange} placeholder="Stok Awal" required className="p-2 border border-gray-500 rounded placeholder:text-gray-500" />
-        <input type="text" name="satuan" value={newBarang.satuan} onChange={handleChange} placeholder="Satuan (Pcs/Dus)" required className="p-2 border border-gray-500 rounded placeholder:text-gray-500" />
+        <input type="text" name="nama_barang" value={newBarang.nama_barang} onChange={handleChange} placeholder="Nama Barang" required className="p-2 border border-gray-500 text-gray-500 rounded placeholder:text-gray-500" />
+        <input type="number" name="harga_beli" value={newBarang.harga_beli} onChange={handleChange} placeholder="Harga Beli" required className="p-2 border border-gray-500 text-gray-500 rounded placeholder:text-gray-500" />
+        <input type="number" name="harga_jual" value={newBarang.harga_jual} onChange={handleChange} placeholder="Harga Jual" required className="p-2 border border-gray-500 text-gray-500 rounded placeholder:text-gray-500" />
+        <input type="number" name="stok" value={newBarang.stok} onChange={handleChange} placeholder="Stok Awal" required className="p-2 border border-gray-500 text-gray-500 rounded placeholder:text-gray-500" />
+        <input type="text" name="satuan" value={newBarang.satuan} onChange={handleChange} placeholder="Satuan (Pcs/Dus)" required className="p-2 border border-gray-500 text-gray-500 rounded placeholder:text-gray-500" />
         <button type="submit" className="md:col-span-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
           Simpan Barang
         </button>

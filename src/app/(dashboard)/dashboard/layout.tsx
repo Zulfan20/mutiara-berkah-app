@@ -31,6 +31,16 @@ export default function DashboardLayout({
                 Manajemen Pelanggan 
              </Link>
             </li>
+          <li>
+          <Link href="/dashboard/transaksi" className="block p-2 rounded hover:bg-gray-700 font-bold text-yellow-300">
+            Buat Transaksi Baru
+          </Link>
+          </li>
+          <li>
+            <Link href="/dashboard/riwayat" className="block p-2 rounded hover:bg-gray-700">
+              Riwayat Transaksi
+            </Link>
+          </li>
           </ul>
         </nav>
       </aside>

@@ -40,48 +40,17 @@ export default function TransaksiManager() {
     fetchData();
   }, []);
 
-  // Ganti fungsi handleTambahKeKeranjang Anda dengan yang ini
-
-const handleTambahKeKeranjang = async (barang: Barang) => {
-  if (!selectedPelanggan) {
-    alert("Pilih pelanggan terlebih dahulu!");
-    return;
-  }
-
-  let hargaFinal = barang.harga_jual; // Mulai dengan harga default
-
-  // Cek apakah ada harga khusus untuk kombinasi pelanggan dan barang ini
-  const { data: hargaKhususData, error } = await supabase
-    .from('harga_khusus')
-    .select('harga')
-    .eq('barang_id', barang.id)
-    .eq('pelanggan_id', selectedPelanggan)
-    .single();
-
-  if (error && error.code !== 'PGRST116') { // Abaikan error 'No rows found'
-    console.error("Error fetching special price:", error);
-  }
-
-  // Jika ada harga khusus, gunakan harga tersebut
-  if (hargaKhususData) {
-    hargaFinal = hargaKhususData.harga;
-  }
-
-  // Lanjutkan logika menambahkan ke keranjang dengan harga final
-  setKeranjang(prevKeranjang => {
-    const existingItem = prevKeranjang.find(item => item.id === barang.id);
-
-    if (existingItem) {
-      return prevKeranjang.map(item =>
-        item.id === barang.id
-          ? { ...item, jumlah: item.jumlah + 1, harga_jual: hargaFinal } // Update harga jika sudah ada
-          : item
-      );
-    }
-    // Tambahkan item baru dengan harga final
-    return [...prevKeranjang, { ...barang, jumlah: 1, harga_jual: hargaFinal }];
-  });
-};
+  const handleTambahKeKeranjang = (barang: Barang) => {
+    setKeranjang(prevKeranjang => {
+      const existingItem = prevKeranjang.find(item => item.id === barang.id);
+      if (existingItem) {
+        return prevKeranjang.map(item =>
+          item.id === barang.id ? { ...item, jumlah: item.jumlah + 1 } : item
+        );
+      }
+      return [...prevKeranjang, { ...barang, jumlah: 1 }];
+    });
+  };
   
   const handleTambahKuantitas = (barangId: string) => {
     setKeranjang(prev => prev.map(item => item.id === barangId ? { ...item, jumlah: item.jumlah + 1 } : item));
@@ -114,76 +83,62 @@ const handleTambahKeKeranjang = async (barang: Barang) => {
 
   // Fungsi simpan transaksi dengan console.log untuk debugging
   const handleSimpanTransaksi = async () => {
-  // 1. Validasi Input (tetap sama)
-  if (!selectedPelanggan) {
-    alert('Silakan pilih pelanggan terlebih dahulu.');
-    return;
-  }
-  if (keranjang.length === 0) {
-    alert('Keranjang masih kosong. Silakan pilih barang.');
-    return;
-  }
+    // 1. Validasi Input
+    if (!selectedPelanggan) {
+      alert('Silakan pilih pelanggan terlebih dahulu.');
+      return;
+    }
+    if (keranjang.length === 0) {
+      alert('Keranjang masih kosong. Silakan pilih barang.');
+      return;
+    }
 
-  // 2. Simpan data utama ke tabel 'transaksi_penjualan'
-  const { data: transaksiData, error: transaksiError } = await supabase
-    .from('transaksi_penjualan')
-    .insert({
+    const transactionPayload = {
       pelanggan_id: selectedPelanggan,
       total_harga: totalHarga,
-    })
-    .select()
-    .single();
+    };
 
-  if (transaksiError) {
-    console.error('Error saving transaction:', transaksiError);
-    alert('Gagal menyimpan transaksi utama.');
-    return;
-  }
+    // --- CONSOLE.LOG PENTING UNTUK DEBUGGING ---
+    console.log("DEBUG: Data yang akan dikirim ke 'transaksi_penjualan':", transactionPayload);
+    // -------------------------------------------
 
-  // 3. Siapkan data detail untuk tabel 'detail_transaksi'
-  const detailTransaksiData = keranjang.map(item => ({
-    transaksi_id: transaksiData.id,
-    barang_id: item.id,
-    jumlah: item.jumlah,
-    subtotal: item.harga_jual * item.jumlah,
-  }));
+    // 2. Simpan data utama ke tabel 'transaksi_penjualan'
+    const { data: transaksiData, error: transaksiError } = await supabase
+      .from('transaksi_penjualan')
+      .insert(transactionPayload)
+      .select()
+      .single();
 
-  // 4. Simpan semua item keranjang ke 'detail_transaksi'
-  const { error: detailError } = await supabase
-    .from('detail_transaksi')
-    .insert(detailTransaksiData);
+    if (transaksiError) {
+      console.error('Error saving transaction:', transaksiError);
+      alert('Gagal menyimpan transaksi utama.');
+      return;
+    }
 
-  if (detailError) {
-    console.error('Error saving transaction details:', detailError);
-    alert('Gagal menyimpan detail barang.');
-    return;
-  }
-  
-  // --- LANGKAH BARU: KURANGI STOK BARANG ---
-  // 5. Siapkan data untuk fungsi pengurangan stok
-  const stockUpdateData = keranjang.map(item => ({
-    barang_id: item.id,
-    jumlah: item.jumlah
-  }));
+    // 3. Siapkan data detail untuk tabel 'detail_transaksi'
+    const detailTransaksiData = keranjang.map(item => ({
+      transaksi_id: transaksiData.id,
+      barang_id: item.id,
+      jumlah: item.jumlah,
+      subtotal: item.harga_jual * item.jumlah,
+    }));
 
-  // 6. Panggil fungsi RPC untuk mengurangi stok
-  const { error: stockError } = await supabase.rpc('kurangi_stok_barang', {
-    items_to_update: stockUpdateData
-  });
+    // 4. Simpan semua item keranjang ke 'detail_transaksi'
+    const { error: detailError } = await supabase
+      .from('detail_transaksi')
+      .insert(detailTransaksiData);
 
-  if (stockError) {
-    console.error('Error updating stock:', stockError);
-    alert('Transaksi berhasil disimpan, tetapi gagal meng-update stok barang.');
-    // Di aplikasi nyata, Anda mungkin ingin membatalkan transaksi jika stok gagal diupdate
-  } else {
-    alert('Transaksi berhasil disimpan dan stok telah diupdate!');
-  }
-  
-  // 7. Jika semua berhasil, reset state
-  setKeranjang([]);
-  setSelectedPelanggan('');
-  // Anda mungkin juga ingin memuat ulang daftar barang untuk melihat stok terbaru
-};
+    if (detailError) {
+      console.error('Error saving transaction details:', detailError);
+      alert('Gagal menyimpan detail barang.');
+      return;
+    }
+
+    // 5. Jika semua berhasil, reset state
+    alert('Transaksi berhasil disimpan!');
+    setKeranjang([]);
+    setSelectedPelanggan('');
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

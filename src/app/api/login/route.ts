@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       // Jika tidak cocok, kirim jawaban "gagal" (status 401)
       return NextResponse.json({ message: 'Invalid password' }, { status: 401 });
     }
-  } catch (error) {
+  } catch  {
     // Jika terjadi error lain di server
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }

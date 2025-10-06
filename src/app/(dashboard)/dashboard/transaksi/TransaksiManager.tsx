@@ -1,7 +1,6 @@
 // src/app/(dashboard)/transaksi/TransaksiManager.tsx
 'use client';
-
-import { useEffect, useState, useMemo, FormEvent } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { createClient } from '@/lib/supabaseClient';
 
 // Tipe data

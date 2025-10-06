@@ -33,7 +33,7 @@ export default function LoginPage() {
         // Jika backend bilang tidak OK, tampilkan error
         setError('Password salah!');
       }
-    } catch (err) {
+    } catch  {
       setError('Terjadi kesalahan. Coba lagi.');
     } finally {
       setIsLoggingIn(false);

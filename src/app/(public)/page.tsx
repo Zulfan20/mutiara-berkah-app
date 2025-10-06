@@ -34,7 +34,6 @@ async function getProdukUnggulan(): Promise<ProdukUnggulan[]> {
 
 export default async function HomePage() {
   const produkUnggulan = await getProdukUnggulan();
-
   return (
     <div className="container mx-auto">
       {/* Hero Section dengan Latar Belakang */}
@@ -43,7 +42,7 @@ export default async function HomePage() {
           className="absolute inset-0 bg-black opacity-40"
         ></div>
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+          <h1 className="text-4xl  md:text-5xl font-extrabold mb-4 leading-tight">
             Mutiara Berkah: Distributor Snack Terpercaya Anda
           </h1>
           <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
@@ -64,21 +63,21 @@ export default async function HomePage() {
               <div className="flex justify-center mb-4">
                 <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Distributor Terpercaya</h3>
+              <h3 className="text-xl text-gray-600 font-semibold mb-2">Distributor Terpercaya</h3>
               <p className="text-gray-600">Kami membangun kepercayaan melalui pelayanan konsisten dan produk berkualitas yang terjamin.</p>
             </div>
             <div className="p-6">
               <div className="flex justify-center mb-4">
                 <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Jangkauan Luas</h3>
+              <h3 className="text-xl text-gray-600 font-semibold mb-2">Jangkauan Luas</h3>
               <p className="text-gray-600">Melayani berbagai toko di pasar-pasar utama seperti Cigombong, Cicurug, dan Parung Kuda.</p>
             </div>
             <div className="p-6">
               <div className="flex justify-center mb-4">
                 <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Produk Lengkap</h3>
+              <h3 className="text-xl text-gray-600 font-semibold mb-2">Produk Lengkap</h3>
               <p className="text-gray-600">Temukan berbagai jenis snack favorit untuk memenuhi semua kebutuhan bisnis dan pelanggan Anda.</p>
             </div>
           </div>

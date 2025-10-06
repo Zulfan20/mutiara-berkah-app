@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, useMemo, FormEvent } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabaseClient';
 
 // Tipe data
 type Barang = {
@@ -20,6 +20,7 @@ type KeranjangItem = Barang & {
 };
 
 export default function TransaksiManager() {
+  const supabase = createClient();
   const [barangList, setBarangList] = useState<Barang[]>([]);
   const [pelangganList, setPelangganList] = useState<Pelanggan[]>([]);
   const [keranjang, setKeranjang] = useState<KeranjangItem[]>([]);

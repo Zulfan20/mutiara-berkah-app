@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState, FormEvent } from 'react';
-import { supabase } from '@/lib/supabaseClient'; // Menggunakan path alias jika sudah di-setup
+import { createClient } from '@/lib/supabaseClient'; // Menggunakan path alias jika sudah di-setup
 
 
 // Tipe data
@@ -26,6 +26,7 @@ type HargaKhusus = {
 };
 
 export default function PelangganManager() {
+  const supabase = createClient();
   const [pelanggan, setPelanggan] = useState<Pelanggan[]>([]);
   const [loading, setLoading] = useState(true);
   const [newPelanggan, setNewPelanggan] = useState<NewPelanggan>({

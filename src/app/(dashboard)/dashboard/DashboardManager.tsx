@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabaseClient';
 
 type Ringkasan = {
   total_omzet: number;
@@ -16,6 +16,7 @@ type StokHampirHabis = {
 };
 
 export default function DashboardManager() {
+  const supabase = createClient();
   const [ringkasan, setRingkasan] = useState<Ringkasan>({ total_omzet: 0, jumlah_transaksi: 0 });
   const [stokHampirHabis, setStokHampirHabis] = useState<StokHampirHabis[]>([]);
   const [loading, setLoading] = useState(true);

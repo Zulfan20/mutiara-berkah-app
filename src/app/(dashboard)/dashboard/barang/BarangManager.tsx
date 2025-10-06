@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, FormEvent, useRef } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabaseClient';
 import Image from 'next/image';
 
 // Tipe data yang konsisten
@@ -28,6 +28,7 @@ type BarangForState = Omit<Barang, 'harga_beli' | 'harga_jual' | 'stok'> & {
 type NewBarangForState = Omit<BarangForState, 'id' | 'created_at' | 'is_active'>;
 
 export default function BarangManager() {
+  const supabase = createClient();
   const [barang, setBarang] = useState<Barang[]>([]);
   const [loading, setLoading] = useState(true);
   

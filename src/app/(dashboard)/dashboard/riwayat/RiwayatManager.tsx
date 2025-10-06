@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/lib/supabaseClient'; // Path disesuaikan jika perlu
 import { useReactToPrint } from 'react-to-print';
 import { StrukBon } from './StrukBon';
 import { Transaksi, TransaksiDetail } from './types'; // Import types dari file baru
 
 export default function RiwayatManager() {
+  const supabase = createClient(); // 1. Buat instance Supabase di sini
   const [riwayat, setRiwayat] = useState<Transaksi[]>([]);
   const [loading, setLoading] = useState(true);
   const [transaksiUntukCetak, setTransaksiUntukCetak] = useState<TransaksiDetail | null>(null);
@@ -28,7 +29,7 @@ export default function RiwayatManager() {
 
       if (data) {
         // Normalisasi data untuk memastikan 'pelanggan' adalah objek, bukan array
-        const normalizedData = data.map(tx => ({
+        const normalizedData = data.map((tx: any) => ({ // 2. Tambahkan tipe 'any' untuk tx
             ...tx,
             pelanggan: Array.isArray(tx.pelanggan) ? tx.pelanggan[0] : tx.pelanggan,
         }));

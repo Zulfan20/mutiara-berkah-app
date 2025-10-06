@@ -43,7 +43,7 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-sm p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Mutiara Berkah</h1>
+        <h1 className="text-2xl font-bold text-center text-gray-600">Mutiara Berkah</h1>
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
@@ -53,7 +53,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoggingIn}
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm"
+              className="w-full px-3 py-2 text-gray-600 mt-1 border border-gray-300 rounded-md shadow-sm"
             />
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}

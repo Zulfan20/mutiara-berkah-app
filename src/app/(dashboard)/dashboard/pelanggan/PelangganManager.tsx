@@ -163,7 +163,7 @@ export default function PelangganManager() {
         <h2 className="text-xl font-bold mb-4 text-gray-800">Tambah Pelanggan Baru</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input type="text" name="nama_pelanggan" value={newPelanggan.nama_pelanggan} onChange={handleChange} placeholder="Nama Pelanggan" required className="p-2 border border-gray-300 rounded placeholder:text-gray-500 md:col-span-2"/>
-            <select name="tipe_pelanggan" value={newPelanggan.tipe_pelanggan} onChange={handleChange} className="p-2 border border-gray-300 rounded">
+            <select name="tipe_pelanggan" value={newPelanggan.tipe_pelanggan} onChange={handleChange} className="p-2 border text-gray-600 border-gray-300 rounded">
                 <option value="Toko Pasar">Toko Pasar</option>
                 <option value="Agen">Agen</option>
             </select>
@@ -203,17 +203,17 @@ export default function PelangganManager() {
       {isModalOpen && editingPelanggan && (
          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
              <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-                 <h2 className="text-xl font-bold mb-4">Edit Pelanggan</h2>
+                 <h2 className="text-xl text-gray-600 font-bold mb-4">Edit Pelanggan</h2>
                  <form onSubmit={handleUpdateSubmit}>
                      <div className="grid grid-cols-1 gap-4">
-                         <input type="text" name="nama_pelanggan" value={editingPelanggan.nama_pelanggan} onChange={handleUpdateChange} required className="p-2 border border-gray-300 rounded placeholder:text-gray-500"/>
-                         <select name="tipe_pelanggan" value={editingPelanggan.tipe_pelanggan} onChange={handleUpdateChange} className="p-2 border border-gray-300 rounded">
+                         <input type="text" name="nama_pelanggan" value={editingPelanggan.nama_pelanggan} onChange={handleUpdateChange} required className="p-2 text-gray-600 border border-gray-300 rounded placeholder:text-gray-500"/>
+                         <select name="tipe_pelanggan" value={editingPelanggan.tipe_pelanggan} onChange={handleUpdateChange} className="p-2 text-gray-600 border border-gray-300 rounded">
                              <option value="Toko Pasar">Toko Pasar</option>
                              <option value="Agen">Agen</option>
                          </select>
                      </div>
                      <div className="flex justify-end gap-4 mt-6">
-                         <button type="button" onClick={() => setIsModalOpen(false)} className="bg-gray-300 px-4 py-2 rounded">Batal</button>
+                         <button type="button" onClick={() => setIsModalOpen(false)} className="bg-gray-300 text-gray-600 px-4 py-2 rounded">Batal</button>
                          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Simpan Perubahan</button>
                      </div>
                  </form>
@@ -225,10 +225,10 @@ export default function PelangganManager() {
       {isHargaModalOpen && selectedPelanggan && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
-            <h2 className="text-xl font-bold mb-1">Atur Harga Khusus</h2>
+            <h2 className="text-xl text-gray-600 font-bold mb-1">Atur Harga Khusus</h2>
             <p className="mb-4 text-gray-600">untuk: <span className="font-bold">{selectedPelanggan.nama_pelanggan}</span></p>
 
-            <form onSubmit={handleSimpanHargaKhusus} className="grid grid-cols-3 gap-3 mb-4 p-3 border rounded-md">
+            <form onSubmit={handleSimpanHargaKhusus} className="grid text-gray-600 grid-cols-3 gap-3 mb-4 p-3 border rounded-md">
                 <select name="barang_id" value={newHargaKhusus.barang_id} onChange={handleHargaKhususChange} className="col-span-2 p-2 border rounded">
                     <option value="" disabled>Pilih Barang</option>
                     {barangList.map(b => <option key={b.id} value={b.id}>{b.nama_barang}</option>)}
@@ -237,7 +237,7 @@ export default function PelangganManager() {
                 <button type="submit" className="col-span-3 bg-blue-500 text-white p-2 rounded">Simpan Harga</button>
             </form>
             
-            <h3 className="font-bold mb-2">Daftar Harga Khusus:</h3>
+            <h3 className="font-bold mb-2 text-gray-600">Daftar Harga Khusus:</h3>
             <div className="max-h-60 overflow-y-auto space-y-2">
                 {hargaKhususList.length > 0 ? hargaKhususList.map(h => (
                     <div key={h.id} className="flex justify-between items-center p-2 bg-gray-100 rounded">
@@ -251,7 +251,7 @@ export default function PelangganManager() {
             </div>
 
             <div className="flex justify-end mt-6">
-              <button type="button" onClick={() => { setIsHargaModalOpen(false); setHargaKhususList([]); }} className="bg-gray-300 px-4 py-2 rounded">Tutup</button>
+              <button type="button" onClick={() => { setIsHargaModalOpen(false); setHargaKhususList([]); }} className="bg-gray-300 px-4 text-gray-600 py-2 rounded">Tutup</button>
             </div>
           </div>
         </div>

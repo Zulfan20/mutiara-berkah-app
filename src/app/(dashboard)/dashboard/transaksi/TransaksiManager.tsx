@@ -149,7 +149,7 @@ export default function TransaksiManager() {
           <select
             value={selectedPelanggan}
             onChange={(e) => setSelectedPelanggan(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full text-gray-600 p-2 border border-gray-300 rounded"
           >
             <option value="" disabled>-- Pilih Nama Pelanggan --</option>
             {pelangganList.map(p => (
@@ -158,21 +158,21 @@ export default function TransaksiManager() {
           </select>
         </div>
 
-        <div className="p-4 border border-gray-400 rounded-lg shadow-sm bg-white">
-          <h2 className="text-xl font-bold mb-4 text-gray-800">2. Pilih Barang</h2>
+        <div className="p-4  border border-gray-400 rounded-lg shadow-sm bg-white">
+          <h2 className="text-xl   font-bold mb-4 text-gray-800">2. Pilih Barang</h2>
           <input
             type="text"
             placeholder="Cari nama barang..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mb-4 placeholder:text-gray-500"
+            className="w-full p-2 text-gray-600 border border-gray-300 rounded mb-4 placeholder:text-gray-500"
           />
            {loading ? <p>Memuat data barang...</p> : (
             <div className="max-h-96 overflow-y-auto">
               {filteredBarangList.map(barang => (
                 <div key={barang.id} className="flex justify-between items-center p-2 border-b">
                   <div>
-                    <p className="font-semibold">{barang.nama_barang}</p>
+                    <p className="font-semibold text-gray-600">{barang.nama_barang}</p>
                     <p className="text-sm text-gray-600">Stok: {barang.stok} | Rp {barang.harga_jual.toLocaleString('id-ID')}</p>
                   </div>
                   <button 
@@ -199,15 +199,15 @@ export default function TransaksiManager() {
               {keranjang.map(item => (
                 <div key={item.id} className="flex justify-between items-center text-sm">
                   <div className="flex-grow">
-                    <p className="font-semibold">{item.nama_barang}</p>
+                    <p className="font-semibold text-gray-600">{item.nama_barang}</p>
                     <p className="text-gray-600">
                       Rp {item.harga_jual.toLocaleString('id-ID')} x {item.jumlah} = Rp {(item.harga_jual * item.jumlah).toLocaleString('id-ID')}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => handleKurangKuantitas(item.id)} className="bg-gray-200 w-6 h-6 rounded font-bold">-</button>
-                    <span>{item.jumlah}</span>
-                    <button onClick={() => handleTambahKuantitas(item.id)} className="bg-gray-200 w-6 h-6 rounded font-bold">+</button>
+                    <button onClick={() => handleKurangKuantitas(item.id)} className="bg-gray-200 w-6 text-gray-600 h-6 rounded font-bold">-</button>
+                    <span className='text-gray-600'>{item.jumlah}</span>
+                    <button onClick={() => handleTambahKuantitas(item.id)} className="bg-gray-200 text-gray-600 w-6 h-6 rounded font-bold">+</button>
                   </div>
                   <button onClick={() => handleHapusDariKeranjang(item.id)} className="ml-4 text-red-500 font-bold">x</button>
                 </div>
@@ -217,8 +217,8 @@ export default function TransaksiManager() {
         </div>
         <div className="space-y-2">
           <div className="flex justify-between font-bold text-lg">
-            <span>Total</span>
-            <span>Rp {totalHarga.toLocaleString('id-ID')}</span>
+            <span className='text-gray-600'>Total</span>
+            <span className='text-gray-600'>Rp {totalHarga.toLocaleString('id-ID')}</span>
           </div>
         </div>
         <button 

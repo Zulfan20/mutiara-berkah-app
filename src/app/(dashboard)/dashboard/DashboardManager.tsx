@@ -59,11 +59,11 @@ export default function DashboardManager() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
           <h3 className="text-gray-500">Total Omzet Hari Ini</h3>
-          <p className="text-3xl font-bold mt-2">Rp {ringkasan.total_omzet.toLocaleString('id-ID')}</p>
+          <p className="text-3xl text-gray-500 font-bold mt-2">Rp {ringkasan.total_omzet.toLocaleString('id-ID')}</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
           <h3 className="text-gray-500">Jumlah Transaksi Hari Ini</h3>
-          <p className="text-3xl font-bold mt-2">{ringkasan.jumlah_transaksi}</p>
+          <p className="text-3xl text-gray-500 font-bold mt-2">{ringkasan.jumlah_transaksi}</p>
         </div>
       </div>
 
@@ -74,8 +74,8 @@ export default function DashboardManager() {
           <ul className="space-y-2">
             {stokHampirHabis.map(item => (
               <li key={item.id} className="flex justify-between items-center text-sm border-b pb-2">
-                <span>{item.nama_barang}</span>
-                <span className="font-bold bg-red-100 text-red-700 px-2 py-1 rounded-full">{item.stok}</span>
+                <span className='text-gray-500'>{item.nama_barang}</span>
+                <span className="font-bold  bg-red-100 text-red-700 px-2 py-1 rounded-full">{item.stok}</span>
               </li>
             ))}
           </ul>

@@ -18,5 +18,8 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
-
+// =======================================================
+// ===== PERUBAHAN UTAMA ADA DI SINI =====
+// =======================================================
+// Gunakan module.exports, bukan export default
+module.exports = nextConfig;

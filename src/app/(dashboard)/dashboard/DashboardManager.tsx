@@ -48,7 +48,7 @@ export default function DashboardManager() {
     }
 
     fetchDashboardData();
-  }, []);
+  }, [supabase]);
 
   if (loading) {
     return <p>Memuat data dashboard...</p>;

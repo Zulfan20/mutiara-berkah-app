@@ -1,8 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
-
 export default function LogoutButton() {
-  const router = useRouter();
   
   const handleLogout = () => {
     // 1. Hapus status login dari browser

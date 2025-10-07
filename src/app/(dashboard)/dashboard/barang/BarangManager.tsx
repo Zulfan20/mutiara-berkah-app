@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, FormEvent, useRef } from 'react';
+import { useEffect, useState, FormEvent, useRef, useCallback } from 'react';
 import { createClient } from '@/lib/supabaseClient';
 import Image from 'next/image';
 
@@ -49,7 +49,7 @@ export default function BarangManager() {
   const formRef = useRef<HTMLFormElement>(null);
 
   // Mengambil hanya barang yang aktif
-  async function getBarang() {
+  const getBarang = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('barang')
@@ -57,14 +57,14 @@ export default function BarangManager() {
       .eq('is_active', true)
       .order('created_at', { ascending: false });
       
-    if (data) setBarang(data as any);
+    if (data) setBarang(data as Barang[]);
     if (error) console.error('Error fetching data:', error);
     setLoading(false);
-  }
+  }, [supabase])
 
   useEffect(() => {
     getBarang();
-  }, []);
+  }, [getBarang]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -153,7 +153,7 @@ export default function BarangManager() {
         finalImageUrl = urlData.publicUrl;
     }
 
-    const { id, created_at, ...updateData } = editingBarang;
+    const { id, created_at: _created_at, ...updateData } = editingBarang;
     const payload = { ...updateData, harga_beli: Number(editingBarang.harga_beli) || 0, harga_jual: Number(editingBarang.harga_jual) || 0, stok: Number(editingBarang.stok) || 0, gambar_url: finalImageUrl };
 
     const { data, error } = await supabase.from('barang').update(payload).match({ id: id }).select().single();

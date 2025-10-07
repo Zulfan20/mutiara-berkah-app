@@ -39,7 +39,7 @@ export default function RiwayatManager() {
       setLoading(false);
     }
     getRiwayat();
-  }, []);
+  }, [supabase]);
 
   const handleCetakClick = async (transaksiId: string) => {
     const { data, error } = await supabase

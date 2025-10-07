@@ -6,8 +6,16 @@ import { useReactToPrint } from 'react-to-print';
 import { StrukBon } from './StrukBon';
 import { Transaksi, TransaksiDetail } from './types'; // Import types dari file baru
 
+// Tipe data baru untuk data mentah dari Supabase
+type RawTransaksi = {
+  id: string;
+  created_at: string;
+  total_harga: number;
+  pelanggan: { nama_pelanggan: string } | { nama_pelanggan: string }[] | null;
+};
+
 export default function RiwayatManager() {
-  const supabase = createClient(); // 1. Buat instance Supabase di sini
+  const supabase = createClient();
   const [riwayat, setRiwayat] = useState<Transaksi[]>([]);
   const [loading, setLoading] = useState(true);
   const [transaksiUntukCetak, setTransaksiUntukCetak] = useState<TransaksiDetail | null>(null);
@@ -28,12 +36,12 @@ export default function RiwayatManager() {
         .order('created_at', { ascending: false });
 
       if (data) {
-        // Normalisasi data untuk memastikan 'pelanggan' adalah objek, bukan array
-        const normalizedData = data.map((tx: any) => ({ // 2. Tambahkan tipe 'any' untuk tx
+        // --- PERBAIKAN: Gunakan tipe data yang benar untuk menggantikan 'any' ---
+        const normalizedData = (data as RawTransaksi[]).map(tx => ({
             ...tx,
             pelanggan: Array.isArray(tx.pelanggan) ? tx.pelanggan[0] : tx.pelanggan,
         }));
-        setRiwayat(normalizedData);
+        setRiwayat(normalizedData as Transaksi[]);
       }
       if (error) console.error(error);
       setLoading(false);
@@ -54,6 +62,8 @@ export default function RiwayatManager() {
     }
 
     if (data) {
+      // Kita tetap menggunakan 'as' di sini karena data detail lebih kompleks,
+      // tapi error 'any' utama sudah hilang.
       setTransaksiUntukCetak(data as TransaksiDetail);
     }
   };

@@ -39,7 +39,6 @@ export default function PelangganManager() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPelanggan, setEditingPelanggan] = useState<Pelanggan | null>(null);
 
-  // --- STATE UNTUK HARGA KHUSUS ---
   const [barangList, setBarangList] = useState<Barang[]>([]);
   const [isHargaModalOpen, setIsHargaModalOpen] = useState(false);
   const [selectedPelanggan, setSelectedPelanggan] = useState<Pelanggan | null>(null);
@@ -49,7 +48,6 @@ export default function PelangganManager() {
     harga: '',
   });
 
-  // Fetch pelanggan dan barang
   const fetchData = useCallback(async () => {
     setLoading(true);
     const { data: pelangganData } = await supabase
@@ -112,7 +110,9 @@ export default function PelangganManager() {
   const handleUpdateSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!editingPelanggan) return;
-    const { id, created_at: _created_at, ...updateData } = editingPelanggan;
+    
+    const { id, created_at, ...updateData } = editingPelanggan;
+
     const { data, error } = await supabase
       .from('pelanggan')
       .update(updateData)
@@ -133,16 +133,22 @@ export default function PelangganManager() {
     setSelectedPelanggan(p);
     const { data, error } = await supabase
       .from('harga_khusus')
-      .select(`
-        id,
-        harga,
-        barang:barang_id (id, nama_barang),
-        barang_id
-      `)
+      .select(`id, harga, barang:barang_id (id, nama_barang), barang_id`)
       .eq('pelanggan_id', p.id);
 
     if (error) console.error('Gagal mengambil harga khusus:', error);
-    if (data) setHargaKhususList(data as any);
+    
+    // --- PERBAIKAN: Transformasi data sebelum set state ---
+    if (data) {
+      // Pastikan `barang` adalah objek, bukan array atau null
+      const formattedData = data.map(item => ({
+        ...item,
+        barang: Array.isArray(item.barang) ? item.barang[0] : item.barang,
+      })).filter(item => item.barang != null); // Hapus item jika relasi barang null
+      
+      setHargaKhususList(formattedData as HargaKhusus[]);
+    }
+    
     setIsHargaModalOpen(true);
   };
 
@@ -153,12 +159,7 @@ export default function PelangganManager() {
 
   const handleSimpanHargaKhusus = async (e: FormEvent) => {
     e.preventDefault();
-    if (
-      !selectedPelanggan ||
-      !newHargaKhusus.barang_id ||
-      !newHargaKhusus.harga ||
-      Number(newHargaKhusus.harga) <= 0
-    ) {
+    if (!selectedPelanggan || !newHargaKhusus.barang_id || !newHargaKhusus.harga || Number(newHargaKhusus.harga) <= 0) {
       alert('Pastikan barang dipilih dan harga valid.');
       return;
     }
@@ -181,14 +182,19 @@ export default function PelangganManager() {
     }
 
     if (data) {
+        const formattedData = {
+            ...data,
+            barang: Array.isArray(data.barang) ? data.barang[0] : data.barang,
+        };
+
       setHargaKhususList(prevList => {
-        const index = prevList.findIndex(item => item.barang_id === data.barang_id);
+        const index = prevList.findIndex(item => item.barang_id === formattedData.barang_id);
         if (index > -1) {
           const updated = [...prevList];
-          updated[index] = data as HargaKhusus;
+          updated[index] = formattedData as HargaKhusus;
           return updated;
         }
-        return [...prevList, data as HargaKhusus];
+        return [...prevList, formattedData as HargaKhusus];
       });
       setNewHargaKhusus({ barang_id: '', harga: '' });
     }
@@ -200,7 +206,6 @@ export default function PelangganManager() {
       if (!error) setHargaKhususList(prev => prev.filter(h => h.id !== hargaId));
     }
   };
-
   return (
     <div>
       {/* Form Tambah Pelanggan */}

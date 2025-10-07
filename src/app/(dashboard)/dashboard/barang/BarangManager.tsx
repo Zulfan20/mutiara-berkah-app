@@ -153,7 +153,10 @@ export default function BarangManager() {
         finalImageUrl = urlData.publicUrl;
     }
 
-    const { id, created_at: _created_at, ...updateData } = editingBarang;
+    // --- PERBAIKAN UNTUK MENGHILANGKAN PERINGATAN ---
+    // Memisahkan 'id' dan 'created_at' tanpa membuat variabel baru yang tidak terpakai
+    const { id, created_at, ...updateData } = editingBarang; 
+    
     const payload = { ...updateData, harga_beli: Number(editingBarang.harga_beli) || 0, harga_jual: Number(editingBarang.harga_jual) || 0, stok: Number(editingBarang.stok) || 0, gambar_url: finalImageUrl };
 
     const { data, error } = await supabase.from('barang').update(payload).match({ id: id }).select().single();
@@ -167,7 +170,7 @@ export default function BarangManager() {
 
   return (
     <div>
-      {/* Form Tambah Barang (dengan value terikat dan warna teks diperbaiki) */}
+      {/* Form Tambah Barang */}
       <div className="mb-8 p-4 border rounded-lg shadow-sm bg-white">
         <h2 className="text-xl font-bold mb-4 text-gray-800">Tambah Barang Baru</h2>
         <form ref={formRef} onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -187,7 +190,7 @@ export default function BarangManager() {
 
       <hr className="my-8" />
 
-      {/* Daftar Barang (dengan warna teks diperbaiki) */}
+      {/* Daftar Barang */}
       <div className="p-4 border rounded-lg shadow-sm bg-white">
         <h2 className="text-xl font-bold mb-4 text-gray-800">Daftar Stok Barang</h2>
         {loading ? <p>Memuat data...</p> : (
@@ -216,9 +219,9 @@ export default function BarangManager() {
         )}
       </div>
 
-      {/* Modal Edit (dengan warna teks diperbaiki) */}
+      {/* Modal Edit */}
       {isModalOpen && editingBarang && (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
             <h2 className="text-xl font-bold mb-4 text-gray-800">Edit Barang</h2>
             <form onSubmit={handleUpdateSubmit}>

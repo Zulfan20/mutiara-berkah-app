@@ -181,7 +181,7 @@ export default function BarangManager() {
           <input type="text" name="satuan" value={newBarang.satuan} onChange={handleChange} placeholder="Satuan (Pcs/Dus)" required className="p-2 border rounded text-gray-800 placeholder:text-gray-500" />
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Upload Gambar</label>
-            <input type="file" name="gambar_file" onChange={handleFileChange} accept="image/*" className="p-2 border rounded w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+            <input type="file" name="gambar_file" onChange={handleFileChange} accept="image/*" className="p-2 text-gray-600 border rounded w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
           </div>
           <textarea name="deskripsi" value={newBarang.deskripsi || ''} onChange={handleChange} placeholder="Deskripsi Singkat Produk" className="p-2 border rounded md:col-span-2 h-24 text-gray-800 placeholder:text-gray-500"></textarea>
           <button type="submit" className="md:col-span-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Simpan Barang</button>

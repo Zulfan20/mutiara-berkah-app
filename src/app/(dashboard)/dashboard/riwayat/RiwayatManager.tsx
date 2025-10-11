@@ -75,11 +75,11 @@ export default function RiwayatManager() {
   }, [transaksiUntukCetak, handlePrint]);
 
   return (
-    <div className="p-4 border border-gray-400 rounded-lg shadow-sm bg-white">
+    <div className="p-4 border  border-gray-400 rounded-lg shadow-sm bg-white">
       {loading ? <p>Memuat riwayat...</p> : (
-        <table className="w-full text-left">
+        <table className=" w-full text-gray-600 text-left">
           <thead>
-            <tr className="border-b bg-gray-100">
+            <tr className="border-b text-gray-600 bg-gray-100">
               <th className="p-2">Tanggal</th>
               <th className="p-2">Pelanggan</th>
               <th className="p-2 text-right">Total</th>

@@ -100,7 +100,7 @@ export default async function HomePage() {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-bold text-lg truncate">{produk.nama_barang}</h3>
+                  <h3 className="font-bold text-lg text-gray-600 truncate">{produk.nama_barang}</h3>
                 </div>
               </div>
             ))}

@@ -63,6 +63,12 @@ function Sidebar({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: ()
                         Riwayat Transaksi
                     </Link>
                 </li>
+                <li>
+                    <Link href="/dashboard/supplier" onClick={toggleSidebar}
+                          className={`block p-2 rounded transition-colors ${pathname === '/dashboard/supplier' ? 'bg-gray-700 text-yellow-300' : 'hover:bg-gray-700'}`}>
+                        Manajemen Supplier
+                    </Link>
+                </li>
             </ul>
         </nav>
         <div className="p-2 border-t border-gray-700">

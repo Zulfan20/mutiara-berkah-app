@@ -3,16 +3,17 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { createClient } from '@/lib/supabaseClient';
 
-// Tipe data untuk Supplier
+// Tipe data untuk Supplier, ditambahkan is_active
 type Supplier = {
   id: string;
   created_at: string;
   nama_supplier: string;
   kontak: string | null;
   alamat: string | null;
+  is_active: boolean;
 };
 
-type NewSupplier = Omit<Supplier, 'id' | 'created_at'>;
+type NewSupplier = Omit<Supplier, 'id' | 'created_at' | 'is_active'>;
 
 export default function SupplierManager() {
   const supabase = createClient();
@@ -31,7 +32,13 @@ export default function SupplierManager() {
   useEffect(() => {
     async function getSuppliers() {
       setLoading(true);
-      const { data, error } = await supabase.from('supplier').select('*').order('nama_supplier');
+      // HANYA AMBIL SUPPLIER YANG AKTIF
+      const { data, error } = await supabase
+        .from('supplier')
+        .select('*')
+        .eq('is_active', true)
+        .order('nama_supplier');
+        
       if (data) setSuppliers(data);
       if (error) console.error('Error fetching suppliers:', error);
       setLoading(false);
@@ -61,7 +68,7 @@ export default function SupplierManager() {
   const handleUpdateSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!editingSupplier) return;
-    const { id, created_at, ...updateData } = editingSupplier;
+    const { id, created_at, is_active, ...updateData } = editingSupplier;
     const { data, error } = await supabase.from('supplier').update(updateData).match({ id }).select().single();
     if (data) {
       setSuppliers(prev => prev.map(s => s.id === id ? data : s));
@@ -70,10 +77,21 @@ export default function SupplierManager() {
     if (error) console.error('Error updating supplier:', error);
   };
 
+  // LOGIKA HAPUS DIPERBARUI MENJADI "ARSIPKAN"
   const handleDelete = async (id: string) => {
-    if (window.confirm("Yakin ingin menghapus supplier ini? Ini tidak bisa dibatalkan.")) {
-        const { error } = await supabase.from('supplier').delete().match({ id });
-        if (!error) setSuppliers(prev => prev.filter(s => s.id !== id));
+    if (window.confirm("Yakin ingin mengarsipkan supplier ini? Mereka akan disembunyikan dari daftar.")) {
+        const { error } = await supabase
+          .from('supplier')
+          .update({ is_active: false })
+          .match({ id });
+
+        if (!error) {
+          setSuppliers(prev => prev.filter(s => s.id !== id));
+          alert("Supplier berhasil diarsipkan.");
+        } else {
+          alert("Gagal mengarsipkan supplier.");
+          console.error("Error archiving supplier:", error);
+        }
     }
   };
 
@@ -99,7 +117,7 @@ export default function SupplierManager() {
                     </div>
                     <div className="flex gap-2">
                         <button onClick={() => { setEditingSupplier(s); setIsModalOpen(true); }} className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Edit</button>
-                        <button onClick={() => handleDelete(s.id)} className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Hapus</button>
+                        <button onClick={() => handleDelete(s.id)} className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Arsipkan</button>
                     </div>
                 </div>
             ))}
@@ -134,3 +152,4 @@ export default function SupplierManager() {
     </div>
   );
 }
+

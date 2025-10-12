@@ -59,14 +59,15 @@ export default function BarangManager() {
   const [selectedBarangForStock, setSelectedBarangForStock] = useState<Barang | null>(null);
   const [jumlahTambahan, setJumlahTambahan] = useState<number | ''>('');
 
-  // --- STATE BARU UNTUK FILTER ---
   const [supplierFilter, setSupplierFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     const { data: barangData } = await supabase.from('barang').select('*, supplier(nama_supplier)').eq('is_active', true).order('created_at', { ascending: false });
-    const { data: supplierData } = await supabase.from('supplier').select('id, nama_supplier').order('nama_supplier');
+    
+    // --- PERBAIKAN: Tambahkan .eq('is_active', true) di sini ---
+    const { data: supplierData } = await supabase.from('supplier').select('id, nama_supplier').eq('is_active', true).order('nama_supplier');
 
     if (barangData) setBarang(barangData as Barang[]);
     if (supplierData) setSuppliers(supplierData as Supplier[]);
@@ -77,21 +78,17 @@ export default function BarangManager() {
     fetchData();
   }, [fetchData]);
 
-  // --- LOGIKA FILTER BARU ---
   const filteredBarang = useMemo(() => {
     return barang
       .filter(item => {
-        // Filter berdasarkan supplier
         if (supplierFilter === 'all') return true;
         return item.supplier_id === supplierFilter;
       })
       .filter(item => {
-        // Filter berdasarkan pencarian nama
         if (!searchTerm) return true;
         return item.nama_barang.toLowerCase().includes(searchTerm.toLowerCase());
       });
   }, [barang, supplierFilter, searchTerm]);
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setNewBarang(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -207,7 +204,7 @@ export default function BarangManager() {
 
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Upload Gambar</label>
-            <input type="file" name="gambar_file" onChange={handleFileChange} accept="image/*" className="p-2 border rounded w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+            <input type="file" name="gambar_file" onChange={handleFileChange} accept="image/*" className=" text-gray-600 p-2 border rounded w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
           </div>
           <textarea name="deskripsi" value={newBarang.deskripsi || ''} onChange={handleChange} placeholder="Deskripsi Singkat Produk" className="p-2 border rounded md:col-span-2 h-24 text-gray-800"></textarea>
           <button type="submit" className="md:col-span-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Simpan Barang</button>
@@ -219,7 +216,6 @@ export default function BarangManager() {
       <div className="p-6 border rounded-lg shadow-md bg-white">
         <h2 className="text-xl font-bold mb-4 text-gray-800">Daftar Stok Barang</h2>
         
-        {/* --- FILTER BARU DITAMBAHKAN DI SINI --- */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
             <input
                 type="text"
@@ -240,7 +236,6 @@ export default function BarangManager() {
 
         {loading ? <p>Memuat data...</p> : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Gunakan 'filteredBarang' untuk me-render */}
             {filteredBarang.map((item) => (
               <div key={item.id} className="border rounded-lg shadow-sm flex flex-col justify-between bg-gray-50 overflow-hidden">
                 <div>

@@ -1,29 +1,38 @@
-export type PelangganSimple = {
+export type PelangganKategori = 'PASAR' | 'JALUR' | 'TOKO' | 'AGEN';
+
+export type Pelanggan = {
+  id: string;
   nama_pelanggan: string;
+  kategori?: PelangganKategori;
+  area?: string | null;
 };
 
-export type BarangSimple = {
+export type Barang = {
+  id: string;
   nama_barang: string;
   harga_jual: number;
-  pcs_per_pack: number | null;
-  pack_per_dus: number | null;
-  satuan: string; // <-- PROPERTI YANG HILANG SEKARANG DITAMBAHKAN
+  satuan: string;
 };
 
-export type DetailTransaksiSimple = {
+export type DetailTransaksi = {
+  id: string;
+  transaksi_id: string;
+  barang_id: string;
   jumlah: number;
+  harga_satuan: number;
   subtotal: number;
-  barang: BarangSimple | null;
+  barang: Barang;
 };
 
 export type Transaksi = {
   id: string;
   created_at: string;
+  pelanggan_id: string;
   total_harga: number;
-  pelanggan: PelangganSimple | null;
+  catatan: string | null;
+  pelanggan: Pelanggan | null;
 };
 
 export type TransaksiDetail = Transaksi & {
-  detail_transaksi: DetailTransaksiSimple[];
+  detail_transaksi: DetailTransaksi[];
 };
-

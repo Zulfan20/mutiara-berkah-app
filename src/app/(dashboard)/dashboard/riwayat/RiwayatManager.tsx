@@ -112,7 +112,7 @@ export default function RiwayatManager() {
                     <td className="p-4 text-gray-900 font-bold flex items-center mt-1">
                       {t.pelanggan?.nama_pelanggan || 'Tanpa Nama'}
                       {/* Tampilkan badge kategori pelanggan (fitur advanced) */}
-                      {getKategoriBadge((t.pelanggan as any)?.kategori)}
+                      {getKategoriBadge(t.pelanggan?.kategori)}
                     </td>
                     <td className="p-4 text-right">
                       <span className="text-blue-700 font-extrabold text-lg">

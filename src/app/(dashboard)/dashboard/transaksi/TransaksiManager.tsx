@@ -106,7 +106,12 @@ export default function TransaksiManager() {
 
       await fetchData(); setKeranjang([]); setSelectedPelanggan(null); setSelectedTopKategori(null); setSelectedWadahId(null);
       alert('✅ Transaksi BERHASIL!');
-    } catch (e: any) { alert(`Error: ${e.message}`); } finally { setIsProcessing(false); }
+    } catch (error) { 
+      const e = error as Error; 
+      alert(`Error: ${e.message}`); 
+    } finally { 
+      setIsProcessing(false); 
+    }
   };
 
   return (

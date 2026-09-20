@@ -112,15 +112,15 @@ export default function PelangganManager() {
     if (!editingPelanggan) return;
     if (editingPelanggan.kategori === 'TOKO' && !editingPelanggan.parent_id) return alert('Toko wajib memilih Induk (Pasar/Jalur)!');
     
-    const { id, created_at, parent, ...updateData } = editingPelanggan;
+    // PERBAIKAN: Langsung panggil dari editingPelanggan
     const payload = {
-      nama_pelanggan: updateData.nama_pelanggan.trim(),
-      kategori: updateData.kategori,
-      area: updateData.area || null,
-      parent_id: updateData.kategori === 'TOKO' ? updateData.parent_id : null,
+      nama_pelanggan: editingPelanggan.nama_pelanggan.trim(),
+      kategori: editingPelanggan.kategori,
+      area: editingPelanggan.area || null,
+      parent_id: editingPelanggan.kategori === 'TOKO' ? editingPelanggan.parent_id : null,
     };
 
-    const { error } = await supabase.from('pelanggan').update(payload).match({ id });
+    const { error } = await supabase.from('pelanggan').update(payload).match({ id: editingPelanggan.id });
     if (!error) { await fetchData(); setIsModalOpen(false); alert('Diperbarui!'); } 
     else alert('Gagal memperbarui.');
   };

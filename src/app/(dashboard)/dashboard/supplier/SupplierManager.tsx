@@ -101,16 +101,23 @@ export default function SupplierManager() {
       return;
     }
 
-    const { id, created_at, is_active, ...updateData } = editingSupplier;
+    // PERBAIKAN: Jabarkan field secara spesifik
+    const updateData = {
+      nama_supplier: editingSupplier.nama_supplier,
+      kategori: editingSupplier.kategori,
+      kontak: editingSupplier.kontak,
+      alamat: editingSupplier.alamat,
+    };
+
     const { data, error } = await supabase
       .from('supplier')
       .update(updateData)
-      .match({ id })
+      .match({ id: editingSupplier.id })
       .select()
       .single();
 
     if (data) {
-      setSuppliers(prev => prev.map(s => s.id === id ? data as Supplier : s));
+      setSuppliers(prev => prev.map(s => s.id === editingSupplier.id ? data as Supplier : s));
       setIsModalOpen(false);
       alert("Supplier berhasil diperbarui!");
     }

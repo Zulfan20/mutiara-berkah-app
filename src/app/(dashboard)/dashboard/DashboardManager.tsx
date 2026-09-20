@@ -1,96 +1,58 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabaseClient'; // Path disesuaikan jika perlu
-
-type Ringkasan = {
-  total_omzet: number;
-  jumlah_transaksi: number;
-};
-
-type StokHampirHabis = {
-  id: string;
-  nama_barang: string;
-  stok: number;
-};
-
 export default function DashboardManager() {
-  const supabase = createClient();
-  const [ringkasan, setRingkasan] = useState<Ringkasan>({ total_omzet: 0, jumlah_transaksi: 0 });
-  const [stokHampirHabis, setStokHampirHabis] = useState<StokHampirHabis[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchDashboardData() {
-      setLoading(true);
-      
-      // Panggil fungsi RPC untuk omzet dan jumlah transaksi (ini sudah benar)
-      const { data: omzetData, error: omzetError } = await supabase.rpc('get_total_omzet_hari_ini');
-      const { data: jumlahData, error: jumlahError } = await supabase.rpc('get_jumlah_transaksi_hari_ini');
-
-      // --- PERBAIKAN: Ambil data stok langsung dari tabel, bukan RPC ---
-      const { data: stokData, error: stokError } = await supabase
-        .from('barang')
-        .select('id, nama_barang, stok')
-        .eq('is_active', true) // Filter hanya barang yang aktif
-        .lte('stok', 10)       // Filter yang stoknya kurang dari atau sama dengan 10
-        .order('stok', { ascending: true });
-
-      if (omzetData !== null) {
-        setRingkasan(prev => ({ ...prev, total_omzet: omzetData }));
-      }
-      if (jumlahData !== null) {
-        setRingkasan(prev => ({ ...prev, jumlah_transaksi: jumlahData }));
-      }
-      if (stokData) {
-        setStokHampirHabis(stokData);
-      }
-
-      if (omzetError) console.error("Error fetching omzet:", omzetError);
-      if (jumlahError) console.error("Error fetching jumlah transaksi:", jumlahError);
-      if (stokError) console.error("Error fetching stok:", stokError);
-      
-      setLoading(false);
-    }
-
-    fetchDashboardData();
-  }, [supabase]);
-
-  if (loading) {
-    return <p>Memuat data dashboard...</p>;
-  }
-
   return (
-    <div className="space-y-6">
-      {/* Bagian Ringkasan */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-          <h3 className="text-gray-500">Total Omzet Hari Ini</h3>
-          <p className="text-3xl text-gray-800 font-bold mt-2">Rp {ringkasan.total_omzet.toLocaleString('id-ID')}</p>
+    <div className="flex flex-col items-center justify-center min-h-[80vh] p-8 bg-gray-50 text-gray-900">
+      
+      {/* Banner / Card Utama */}
+      <div className="bg-white p-10 md:p-16 rounded-2xl shadow-lg border-2 border-gray-300 w-full max-w-4xl text-center flex flex-col items-center">
+        
+        {/* Ikon Toko */}
+        <div className="bg-blue-100 w-32 h-32 flex items-center justify-center rounded-full mb-8 border-4 border-blue-300 shadow-inner">
+          <span className="text-6xl">🏢</span>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-          <h3 className="text-gray-500">Jumlah Transaksi Hari Ini</h3>
-          <p className="text-3xl text-gray-800 font-bold mt-2">{ringkasan.jumlah_transaksi}</p>
+
+        {/* Teks Sambutan */}
+        <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          Selamat Datang di Sistem
+        </h1>
+        <h2 className="text-4xl md:text-6xl font-black text-blue-700 mb-8 drop-shadow-sm">
+          MUTIARA BERKAH 2.0
+        </h2>
+        
+        <p className="text-lg md:text-xl font-medium text-gray-600 max-w-2xl leading-relaxed mb-10">
+          Sistem manajemen grosir, distribusi jaringan, dan Point of Sale (POS) kelas enterprise.
+        </p>
+
+        {/* Panduan Singkat Menu */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-left mt-4 border-t-2 border-gray-200 pt-10">
+          <div className="bg-gray-50 p-5 rounded-xl border-2 border-gray-200 hover:border-blue-400 transition">
+            <h3 className="text-lg font-extrabold text-gray-900 mb-2">📦 Kelola Data</h3>
+            <p className="text-sm font-medium text-gray-600">
+              Gunakan menu <strong>Barang</strong>, <strong>Pelanggan</strong>, dan <strong>Supplier</strong> untuk mengatur stok dan jaringan distribusi.
+            </p>
+          </div>
+          <div className="bg-gray-50 p-5 rounded-xl border-2 border-gray-200 hover:border-green-400 transition">
+            <h3 className="text-lg font-extrabold text-gray-900 mb-2">💸 Kasir Utama</h3>
+            <p className="text-sm font-medium text-gray-600">
+              Buka menu <strong>Transaksi</strong> untuk melayani pembeli dengan harga otomatis sesuai hierarki pasar.
+            </p>
+          </div>
+          <div className="bg-gray-50 p-5 rounded-xl border-2 border-gray-200 hover:border-purple-400 transition">
+            <h3 className="text-lg font-extrabold text-gray-900 mb-2">🖨️ Cetak Struk</h3>
+            <p className="text-sm font-medium text-gray-600">
+              Semua penjualan terekam di menu <strong>Riwayat</strong> untuk kemudahan pencetakan bon/struk ulang.
+            </p>
+          </div>
         </div>
+
+      </div>
+      
+      {/* Footer */}
+      <div className="mt-12 text-center">
+        <p className="text-sm font-bold text-gray-500">
+          Mutiara Berkah System v2.0 • Status: <span className="text-green-600">Online & Siap Digunakan</span>
+        </p>
       </div>
 
-      {/* Bagian Stok Hampir Habis */}
-      <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-        <h3 className="text-lg font-bold text-red-600 mb-4">Stok Barang Hampir Habis (10 atau kurang)</h3>
-        {stokHampirHabis.length > 0 ? (
-          <ul className="space-y-2">
-            {stokHampirHabis.map(item => (
-              <li key={item.id} className="flex justify-between items-center text-sm border-b pb-2">
-                <span className='text-gray-700'>{item.nama_barang}</span>
-                <span className="font-bold bg-red-100 text-red-700 px-2 py-1 rounded-full">{item.stok}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-gray-500">Tidak ada barang yang stoknya menipis. Kerja bagus!</p>
-        )}
-      </div>
     </div>
   );
 }
-

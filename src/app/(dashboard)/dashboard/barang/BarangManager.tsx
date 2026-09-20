@@ -306,17 +306,17 @@ export default function BarangManager() {
       finalImageUrl = urlData.publicUrl;
     }
 
-    const { id, created_at, barang_supplier, ...updateData } = editingBarang;
+    const id = editingBarang.id;
     const payload = {
-      nama_barang: updateData.nama_barang,
-      harga_beli: Number(updateData.harga_beli) || 0,
-      harga_jual: Number(updateData.harga_jual) || 0,
-      stok: Number(updateData.stok) || 0,
-      satuan: updateData.satuan,
+      nama_barang: editingBarang.nama_barang,
+      harga_beli: Number(editingBarang.harga_beli) || 0,
+      harga_jual: Number(editingBarang.harga_jual) || 0,
+      stok: Number(editingBarang.stok) || 0,
+      satuan: editingBarang.satuan,
       gambar_url: finalImageUrl,
-      deskripsi: updateData.deskripsi,
-      pcs_per_pack: updateData.pcs_per_pack ? Number(updateData.pcs_per_pack) : null,
-      pack_per_dus: updateData.pack_per_dus ? Number(updateData.pack_per_dus) : null,
+      deskripsi: editingBarang.deskripsi,
+      pcs_per_pack: editingBarang.pcs_per_pack ? Number(editingBarang.pcs_per_pack) : null,
+      pack_per_dus: editingBarang.pack_per_dus ? Number(editingBarang.pack_per_dus) : null,
     };
 
     // 1. Update Barang

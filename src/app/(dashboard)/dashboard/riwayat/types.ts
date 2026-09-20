@@ -12,6 +12,9 @@ export type Barang = {
   nama_barang: string;
   harga_jual: number;
   satuan: string;
+  // TAMBAHAN: Agar StrukBon tidak error
+  pcs_per_pack?: number | null;
+  pack_per_dus?: number | null;
 };
 
 export type DetailTransaksi = {
